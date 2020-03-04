@@ -49,14 +49,7 @@ class LogisticModel(models.BaseModel):
   """Logistic model with L2 regularization."""
 
   def create_model(self, model_input, vocab_size, l2_penalty=None, **unused_params):
-    """Creates a logistic model.
-    Args:
-      model_input: 'batch' x 'num_features' matrix of input features.
-      vocab_size: The number of classes in the dataset.
-    Returns:
-      A dictionary with a tensor containing the probability predictions of the
-      model in the 'predictions' key. The dimensions of the tensor are
-      batch_size x num_classes."""
+
     l2_penalty = l2_penalty or FLAGS.l2_penalty
     logits = slim.fully_connected(
         model_input, vocab_size, activation_fn=None,
@@ -77,26 +70,7 @@ class MoeModel(models.BaseModel):
                    num_mixtures=None,
                    l2_penalty=1e-8,
                    **unused_params):
-    """Creates a Mixture of (Logistic) Experts model.
-     It also includes the possibility of gating the probabilities
 
-     The model consists of a per-class softmax distribution over a
-     configurable number of logistic classifiers. One of the classifiers in the
-     mixture is not trained, and always predicts 0.
-
-    Args:
-      model_input: 'batch_size' x 'num_features' matrix of input features.
-      vocab_size: The number of classes in the dataset.
-      is_training: Is this the training phase ?
-      num_mixtures: The number of mixtures (excluding a dummy 'expert' that
-        always predicts the non-existence of an entity).
-      l2_penalty: How much to penalize the squared magnitudes of parameter
-        values.
-    Returns:
-      A dictionary with a tensor containing the probability predictions of the
-      model in the 'predictions' key. The dimensions of the tensor are
-      batch_size x num_classes.
-    """
     num_mixtures = num_mixtures or FLAGS.moe_num_mixtures
     low_rank_gating = FLAGS.moe_low_rank_gating
     l2_penalty = FLAGS.moe_l2;

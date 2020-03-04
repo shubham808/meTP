@@ -136,26 +136,7 @@ class AttentionLayers():
 class AttentionModel(models.BaseModel):
 
   def create_model(self, model_input, vocab_size, num_frames, **unused_params):
-    """Creates a model which uses a logistic classifier over the average of the
 
-    frame-level features.
-
-    This class is intended to be an example for implementors of frame level
-    models. If you want to train a model over averaged features it is more
-    efficient to average them beforehand rather than on the fly.
-
-    Args:
-      model_input: A 'batch_size' x 'max_frames' x 'num_features' matrix of
-        input features.
-      vocab_size: The number of classes in the dataset.
-      num_frames: A vector of length 'batch' which indicates the number of
-        frames for each video (before padding).
-
-    Returns:
-      A dictionary with a tensor containing the probability predictions of the
-      model in the 'predictions' key. The dimensions of the tensor are
-      'batch_size' x 'num_classes'.
-    """
     num_frames_t=num_frames
     num_frames = tf.cast(tf.expand_dims(num_frames, 1), tf.float32)
     feature_size = model_input.get_shape().as_list()[2]
@@ -280,26 +261,6 @@ class MultiAttentionLayers():
 class MultiAttentionModel(models.BaseModel):
 
   def create_model(self, model_input, vocab_size, num_frames, **unused_params):
-    """Creates a model which uses a logistic classifier over the average of the
-
-    frame-level features.
-
-    This class is intended to be an example for implementors of frame level
-    models. If you want to train a model over averaged features it is more
-    efficient to average them beforehand rather than on the fly.
-
-    Args:
-      model_input: A 'batch_size' x 'max_frames' x 'num_features' matrix of
-        input features.
-      vocab_size: The number of classes in the dataset.
-      num_frames: A vector of length 'batch' which indicates the number of
-        frames for each video (before padding).
-
-    Returns:
-      A dictionary with a tensor containing the probability predictions of the
-      model in the 'predictions' key. The dimensions of the tensor are
-      'batch_size' x 'num_classes'.
-    """
     num_frames_t=num_frames
     num_frames = tf.cast(tf.expand_dims(num_frames, 1), tf.float32)
     feature_size = model_input.get_shape().as_list()[2]
@@ -452,18 +413,6 @@ class CnnLstmMemoryModel(models.BaseModel):
     return cnn_output
 
   def create_model(self, model_input, vocab_size, num_frames, **unused_params):
-    """Creates a model which uses a stack of LSTMs to represent the video.
-    Args:
-      model_input: A 'batch_size' x 'max_frames' x 'num_features' matrix of
-                   input features.
-      vocab_size: The number of classes in the dataset.
-      num_frames: A vector of length 'batch' which indicates the number of
-           frames for each video (before padding).
-    Returns:
-      A dictionary with a tensor containing the probability predictions of the
-      model in the 'predictions' key. The dimensions of the tensor are
-      'batch_size' x 'num_classes'.
-    """
     lstm_size = 1024#int(FLAGS.lstm_cells)
     number_of_layers = 1#FLAGS.lstm_layers
 

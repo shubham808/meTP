@@ -273,21 +273,21 @@ def build_graph(reader,
   print("labels_batch, ", labels_batch)
 
   import csv
-  import urllib2
+  import urllib3
   import numpy as np
+  import pandas as pd
   whitelisted_cls_mask = np.zeros((3862,),
                                 dtype=np.float32)
-  url = 'http://storage.googleapis.com/youtube8m-lijun-mlengine/segment_label_ids.csv'
-  response = urllib2.urlopen(url)
-  fobj = csv.reader(response)
-  for line in fobj:
+  url = pd.read_csv('segment_label_ids.csv')
+  # response = urllib2.urlopen(url)
+  for line in url:
     try:
       cls_id = int(line[0])
       whitelisted_cls_mask[cls_id] = 1.
     except ValueError:
         # Simply skip the non-integer line.
       continue  
-  response.close()
+  #response.close()
 
   # url2 = 'http://storage.googleapis.com/youtube8m-lijun-mlengine/classCount.csv'
   # response2 = urllib2.urlopen(url2)

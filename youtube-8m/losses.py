@@ -58,12 +58,6 @@ class CrossEntropyLoss(BaseLoss):
 
 
 class HingeLoss(BaseLoss):
-  """Calculate the hinge loss between the predictions and labels.
-
-  Note the subgradient is used in the backpropagation, and thus the optimization
-  may converge slower. The predictions trained by the hinge loss are between -1
-  and +1.
-  """
 
   def calculate_loss(self, predictions, labels, b=1.0, **unused_params):
     with tf.name_scope("loss_hinge"):
@@ -78,16 +72,7 @@ class HingeLoss(BaseLoss):
 
 
 class SoftmaxLoss(BaseLoss):
-  """Calculate the softmax loss between the predictions and labels.
 
-  The function calculates the loss in the following way: first we feed the
-  predictions to the softmax activation function and then we calculate
-  the minus linear dot product between the logged softmax activations and the
-  normalized ground truth label.
-
-  It is an extension to the one-hot label. It allows for more than one positive
-  labels for each sample.
-  """
 
   def calculate_loss(self, predictions, labels, **unused_params):
     with tf.name_scope("loss_softmax"):

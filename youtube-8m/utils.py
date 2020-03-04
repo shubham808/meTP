@@ -54,18 +54,6 @@ def AddGlobalStepSummary(summary_writer,
                          global_step_val,
                          global_step_info_dict,
                          summary_scope="Eval"):
-  """Add the global_step summary to the Tensorboard.
-
-  Args:
-    summary_writer: Tensorflow summary_writer.
-    global_step_val: a int value of the global step.
-    global_step_info_dict: a dictionary of the evaluation metrics calculated for
-      a mini-batch.
-    summary_scope: Train or Eval.
-
-  Returns:
-    A string of this global_step summary
-  """
   this_hit_at_one = global_step_info_dict["hit_at_one"]
   this_perr = global_step_info_dict["perr"]
   this_loss = global_step_info_dict["loss"]
@@ -99,18 +87,6 @@ def AddEpochSummary(summary_writer,
                     global_step_val,
                     epoch_info_dict,
                     summary_scope="Eval"):
-  """Add the epoch summary to the Tensorboard.
-
-  Args:
-    summary_writer: Tensorflow summary_writer.
-    global_step_val: a int value of the global step.
-    epoch_info_dict: a dictionary of the evaluation metrics calculated for the
-      whole epoch.
-    summary_scope: Train or Eval.
-
-  Returns:
-    A string of this global_step summary
-  """
   epoch_id = epoch_info_dict["epoch_id"]
   avg_hit_at_one = epoch_info_dict["avg_hit_at_one"]
   avg_perr = epoch_info_dict["avg_perr"]
@@ -142,18 +118,6 @@ def AddEpochSummary(summary_writer,
 
 
 def GetListOfFeatureNamesAndSizes(feature_names, feature_sizes):
-  """Extract the list of feature names and the dimensionality of each feature
-
-     from string of comma separated values.
-
-  Args:
-    feature_names: string containing comma separated list of feature names
-    feature_sizes: string containing comma separated list of feature sizes
-
-  Returns:
-    List of the feature names and list of the dimensionality of each feature.
-    Elements in the first/second list are strings/integers.
-  """
   list_of_feature_names = [
       feature_names.strip() for feature_names in feature_names.split(",")
   ]
@@ -169,15 +133,7 @@ def GetListOfFeatureNamesAndSizes(feature_names, feature_sizes):
 
 
 def clip_gradient_norms(gradients_to_variables, max_norm):
-  """Clips the gradients by the given value.
 
-  Args:
-    gradients_to_variables: A list of gradient to variable pairs (tuples).
-    max_norm: the maximum norm value.
-
-  Returns:
-    A list of clipped gradient to variable pairs.
-  """
   clipped_grads_and_vars = []
   for grad, var in gradients_to_variables:
     if grad is not None:
@@ -191,19 +147,7 @@ def clip_gradient_norms(gradients_to_variables, max_norm):
 
 
 def combine_gradients(tower_grads):
-  """Calculate the combined gradient for each shared variable across all towers.
 
-  Note that this function provides a synchronization point across all towers.
-
-  Args:
-    tower_grads: List of lists of (gradient, variable) tuples. The outer list is
-      over individual gradients. The inner list is over the gradient calculation
-      for each tower.
-
-  Returns:
-     List of pairs of (gradient, variable) where the gradient has been summed
-     across all towers.
-  """
   filtered_grads = [
       [x for x in grad_list if x[0] is not None] for grad_list in tower_grads
   ]
